@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Adventure Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="chat-window">
+        <div id="chat-messages">
+            <div class="message bot-message">Welcome, brave adventurer! Your quest awaits. What is your first command?</div>
+            <!-- Messages will appear here -->
+        </div>
+        <div id="input-area">
+            <form id="chat-form" hx-post="/generate" hx-target="#chat-messages" hx-swap="beforeend" hx-on::after-request="this.reset()">
+                <input type="text" name="message" id="message-input" placeholder="Enter your command..." autofocus>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
