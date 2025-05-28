@@ -14,7 +14,7 @@
             <!-- Messages will appear here -->
         </div>
         <div id="input-area">
-            <form id="chat-form" hx-post="/chat" hx-target="#chat-messages" hx-swap="beforeend" hx-on::after-request="this.reset()">
+            <form id="chat-form" hx-post="/generate" hx-target="#chat-messages" hx-swap="beforeend" hx-on::after-request="this.reset()">
                 <input type="text" name="message" id="message-input" placeholder="Enter your command..." autofocus>
                 <button type="submit">Send</button>
             </form>
