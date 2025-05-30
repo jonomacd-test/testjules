@@ -1,0 +1,17 @@
+<div class="css-carousel">
+    <div class="carousel-slides">
+        <!-- First image slide will be rendered here by the server initially using image_slide.html -->
+        {{ template "image_slide.html" .FirstImage }}
+    </div>
+    <div class="carousel-controls">
+        <!-- Basic controls; actual implementation might vary based on CSS carousel choice -->
+        <!-- For scroll snap, these might not be strictly necessary if scroll is intuitive -->
+    </div>
+    <button class="regenerate-image-btn"
+            hx-post="/generate/image"
+            hx-vals='{"message_text": "{{ .MessageText }}"}'
+                hx-target="closest .css-carousel .carousel-slides"
+            hx-swap="beforeend">
+        Regenerate Image
+    </button>
+</div>
