@@ -1,0 +1,253 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#chat-window {
+    width: 80%;
+    max-width: 600px;
+    height: 90vh;
+    max-height: 700px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* MODIFIED from original */
+.message {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 100%; /* Allow message to take full width before flex adjusts */
+    line-height: 1.4;
+    display: flex; /* Changed to flex for layout */
+    flex-wrap: wrap; /* Allow wrapping for mobile */
+    position: relative; /* For button positioning if needed */
+}
+
+/* MODIFIED from original */
+.bot-message {
+    background-color: #e9ecef;
+    color: #333;
+    align-self: flex-start; /* Keep */
+    border-bottom-left-radius: 4px; /* Keep */
+    /* flex-direction will be handled by media queries */
+}
+
+/* MODIFIED from original */
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end; /* Keep */
+    border-bottom-right-radius: 4px; /* Keep */
+    /* flex-direction will be handled by media queries */
+}
+
+/* NEW */
+.message-content {
+    flex-basis: 60%; /* Default basis for message text */
+    flex-grow: 1;
+    /* width will be handled by media queries */
+}
+
+/* NEW */
+.image-carousel-container {
+    flex-basis: 35%; /* Default basis for image container */
+    flex-grow: 1;
+    min-height: 100px; /* So it's visible if empty for a moment */
+    /* padding-left is handled by media queries */
+    /* width will be handled by media queries */
+    /* order is handled by media queries */
+    /* margin-bottom is handled by media queries */
+}
+
+/* NEW - Buttons styling */
+.generate-image-btn, .regenerate-image-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-top: 10px; /* Space above the button */
+    transition: background-color 0.2s ease;
+    flex-basis: 100%;
+    text-align: center;
+    /* order is handled by media queries for .generate-image-btn */
+}
+
+.generate-image-btn:hover, .regenerate-image-btn:hover {
+    background-color: #5a6268;
+}
+
+/* NEW - Specific to regenerate button if it's inside the carousel */
+.css-carousel .regenerate-image-btn {
+    display: block; /* Make it block to take its own line */
+    margin: 10px auto; /* Center it if desired */
+}
+
+#input-area { /* Existing */
+    border-top: 1px solid #ddd;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+#chat-form { /* Existing */
+    display: flex;
+}
+
+#message-input { /* Existing */
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1em;
+}
+
+#message-input:focus { /* Existing */
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+#chat-form button { /* Existing */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+#chat-form button:hover { /* Existing */
+    background-color: #0056b3;
+}
+
+/* NEW - CSS Carousel (Scroll Snap based) */
+.css-carousel {
+    width: 100%;
+    max-width: 300px; /* Max width for the carousel */
+    margin: 0 auto; /* Center it in its container */
+    overflow: hidden;
+    position: relative; /* For absolute positioned controls if needed */
+}
+
+.carousel-slides {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+    padding-bottom: 15px; /* Space for scrollbar if always visible */
+}
+
+.carousel-slide {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 100%; /* Each slide takes full width of the .carousel-slides container */
+    height: auto; /* Adjust as needed */
+    margin-right: 0; /* No margin between slides */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide img {
+    max-width: 100%;
+    max-height: 250px; /* Max height for image */
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Hide scrollbar (optional, can be kept for desktop) */
+.carousel-slides::-webkit-scrollbar {
+    display: none;
+}
+.carousel-slides {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Basic controls - these are conceptual for now, may not be needed with touch/mouse scroll */
+.carousel-controls {
+    text-align: center;
+    margin-top: 5px;
+}
+.carousel-controls button { /* Example if you add dedicated prev/next via HTMX later */
+    background: #ccc;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+/* NEW - Responsive Layout (Media Queries) */
+/* Mobile first: default is image above message (flex-wrap handles this) */
+.message.bot-message, .message.user-message { /* User messages too if they get images */
+    flex-direction: column; /* Stack items vertically */
+}
+
+.image-carousel-container {
+    width: 100%; /* Full width on mobile */
+    padding-left: 0; /* No padding on mobile */
+    margin-bottom: 10px; /* Space below image, above text */
+    order: -1; /* Image appears above message content */
+}
+
+.message-content {
+    width: 100%; /* Full width on mobile */
+    order: 0; /* Message content after image (if image present) or first */
+}
+
+.generate-image-btn {
+   order: 1; /* Button appears below message content and image */
+}
+
+
+/* Desktop layout */
+@media (min-width: 768px) {
+    .message.bot-message, .message.user-message {
+        flex-direction: row; /* Side-by-side */
+        align-items: flex-start; /* Align items to the top */
+    }
+
+    .message-content {
+        flex-basis: 60%; /* Text takes up more space */
+        order: 0; /* Text first */
+        width: auto; /* Reset width from mobile */
+    }
+
+    .image-carousel-container {
+        flex-basis: 35%;
+        min-width: 150px; /* Ensure it has some width */
+        padding-left: 15px; /* Space between text and image */
+        margin-bottom: 0; /* Reset margin */
+        order: 1; /* Image container second */
+        width: auto; /* Reset width from mobile */
+    }
+
+    .generate-image-btn {
+        flex-basis: 100%; /* Button takes full width below both on desktop */
+        order: 2; /* Button last on desktop */
+    }
+}

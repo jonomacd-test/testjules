@@ -1,0 +1,34 @@
+{{define "chat_window"}}
+<div id="chat-window">
+    <div id="chat-messages">
+        {{range .InitialMessages}}
+            <div class="message {{if .IsBot}}bot-message{{else}}user-message{{end}}" {{if .ID}}id="{{.ID}}"{{end}}>
+                <div class="message-content">{{.Content}}</div>
+                {{if .IsBot}} {{/* Assuming only bot messages can have images for now */}}
+                <div class="image-carousel-container">
+                    <!-- Carousel will be loaded here by HTMX if .ImageCarouselData is initially nil,
+                         OR pre-populated if .ImageCarouselData is provided -->
+                    {{if .ImageCarouselData}}
+                        {{template "image_carousel_wrapper.html" .ImageCarouselData}}
+                    {{end}}
+                </div>
+                <button class="generate-image-btn"
+                        hx-post="/generate/image"
+                        hx-vals='{"message_text": "{{.Content}}", "message_id": "{{.ID}}"}'
+                        hx-target="closest .message.bot-message .image-carousel-container"
+                        hx-swap="innerHTML">
+                    Generate Image
+                </button>
+                {{end}}
+            </div>
+        {{end}}
+        <!-- New messages from HTMX POSTs will be appended here -->
+    </div>
+    <div id="input-area">
+        <form id="chat-form" hx-post="{{.FormPostURL | default "/generate"}}" hx-target="#chat-messages" hx-swap="beforeend" hx-on::after-request="this.reset()">
+            <input type="text" name="message" id="message-input" placeholder="Enter your command..." autofocus>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+{{end}}
